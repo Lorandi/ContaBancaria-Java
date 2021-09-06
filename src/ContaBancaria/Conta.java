@@ -6,23 +6,48 @@ public abstract class Conta {
     private String tipo;
     private String titular;
     private double saldo;
-    private boolean status;
+    private boolean contaAberta;
 
 
     abstract void abrirConta();
 
-    abstract void fecharConta();
+    void fecharConta() {
+        if (this.isContaAberta() && this.getSaldo() == 0) {
+            this.setContaAberta(false);
+            System.out.println("Conta de " + this.titular + " foi fechada");
+        } else {
+            System.out.print("Conta não pode ser fechada ");
+            if (this.getSaldo() != 0) {
+                System.out.println("pois o saldo da conta é " + this.getSaldo() + " e precisa ser zerado antes de fechar");
+            } else {
+                System.out.println("pois a conta já estava fechada");
+            }
+        }
+        this.status();
+    }
+
 
     void depositar(double valor) {
-        this.saldo += valor;
+        if(valor < 0 ){
+            System.out.println("Valor para depósito precisa ser positivo");
+            return;
+        } else if (contaAberta ) {
+            this.saldo += valor;
+        } else {
+            System.out.println("Conta está fechada");
+        }
+
     }
 
     void sacar(double valor) {
-        if (this.saldo >= valor) {
+        if(valor < 0 ) {
+            System.out.println("Valor para saque precisa ser positivo");
+        }else if (contaAberta && this.saldo >= valor) {
             this.saldo -= valor;
-        } else{
-            System.out.println("Conta de " + titular + " não tem saldo para esta operação" );
+        } else {
+            System.out.println(" Não é possivel sacar");
         }
+        System.out.println("");
     }
 
     abstract void pagarMensalidade();
@@ -31,12 +56,12 @@ public abstract class Conta {
     public void status() {
         System.out.println(
                 "Titular: " + titular
-                + "\n Tipo de conta: " + tipo
-                + "\n Agência: " + agencia
-                + "\n Número da conta: " + numeroDaConta
-                + "\n Saldo: " + saldo
-                + "\n Status da conta: "+ this.status
-                + "\n");
+                        + "\n Tipo de conta: " + tipo
+                        + "\n Agência: " + agencia
+                        + "\n Número da conta: " + numeroDaConta
+                        + "\n Saldo: " + saldo
+                        + "\n Status da conta: " + this.contaAberta
+                        + "\n");
 
     }
 
@@ -80,11 +105,11 @@ public abstract class Conta {
         this.saldo = saldo;
     }
 
-    public boolean isStatus() {
-        return status;
+    public boolean isContaAberta() {
+        return contaAberta;
     }
 
-    public void setStatus(boolean status) {
-        this.status = status;
+    public void setContaAberta(boolean contaAberta) {
+        this.contaAberta = contaAberta;
     }
 }

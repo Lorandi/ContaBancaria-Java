@@ -12,18 +12,13 @@ public class ContaPoupança extends Conta{
 
     @Override
     void abrirConta() {
+        System.out.println("Conta de " + this.getTitular() + " foi aberta");
         this.setSaldo(100);
-        this.setStatus(true);
+        this.setContaAberta(true);
+        this.status();
+
     }
 
-    @Override
-    void fecharConta() {
-        if(this.isStatus()  && this.getSaldo() == 0){
-            this.setStatus(false);
-        }else{
-            System.out.println("Conta não pode ser fechada");
-        }
-    }
 
     @Override
     void pagarMensalidade() {
